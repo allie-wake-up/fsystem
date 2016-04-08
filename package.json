@@ -1,0 +1,24 @@
+{
+  "name": "chrome-fs",
+  "version": "0.1.0",
+  "description": "chrome.filesystem with promises and helper fns",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheKiteEatingTree/chrome-fs.git"
+  },
+  "keywords": [
+    "chrome.filesystem",
+    "chrome",
+    "filesystem"
+  ],
+  "author": "Andrew Stephan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TheKiteEatingTree/chrome-fs/issues"
+  },
+  "homepage": "https://github.com/TheKiteEatingTree/chrome-fs#readme"
+}
