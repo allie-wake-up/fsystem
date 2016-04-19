@@ -12,29 +12,25 @@ class Directory extends Entry {
     }
 
     createDirectory(name, exclusive = true) {
-        return this.getDirectory(name, {
-            create: true,
-            exclusive
+        if (name[name.length - 1] === '/') {
+            name = name.slice(0, -1);
+        }
+        const dirs = this._getDirArray(name);
+        return this._createIntermediateDirs(dirs).then(() => {
+            return this.getDirectory(name, {
+                create: true,
+                exclusive
+            });
         });
     }
 
     createFile(name, exclusive = true) {
-        return this._createIntermediateDirs(name)
+        const dirs = this._getDirArray(name);
+        return this._createIntermediateDirs(dirs)
             .then(() => this.getFile(name, {
                 create: true,
                 exclusive
             }));
-    }
-
-    _createIntermediateDirs(name) {
-        const parts = name.split('/');
-        parts.splice(parts.length - 1, 1);
-        if (parts.length) {
-            parts.forEach((part, index, parts) => {
-                const name = parts.slice(0, index).join('/');
-                this.createDir(name);
-            });
-        }
     }
 
     getDirectory(name, options = {}) {
@@ -132,6 +128,32 @@ class Directory extends Entry {
             });
 
             return Promise.all(promises);
+        });
+    }
+
+    _createIntermediateDirs(dirs) {
+        if (!dirs.length) {
+            return Promise.resolve();
+        } else if (dirs.length === 1) {
+            return this.getDirectory(name, {
+                create: true,
+                exclusive: true
+            });
+        } else {
+            return this.getDirectory(name, {
+                create: true,
+                exclusive: true
+            }).then(() => {
+                return this._createIntermediateDirs(dirs.splice(0, 1));
+            });
+        }
+    }
+
+    _getDirArray(name) {
+        const parts = name.split('/');
+        parts.splice(parts.length - 1, 1);
+        return parts.map((part, index, parts) => {
+            return parts.slice(0, index).join('/');
         });
     }
 }

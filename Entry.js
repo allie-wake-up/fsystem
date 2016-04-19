@@ -24,4 +24,10 @@ class Entry {
     retain() {
         return chrome.fileSystem.retainEntry(this.entry);
     }
+
+    remove() {
+        return new Promise((resolve, reject) => {
+            this.entry.remove(resolve, reject);
+        });
+    }
 }
