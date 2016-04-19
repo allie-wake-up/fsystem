@@ -3,8 +3,6 @@
 const Entry = require('./Entry.js');
 const File = require('./File.js');
 
-module.exports = Directory;
-
 class Directory extends Entry {
     constructor(entry) {
         super(entry);
@@ -35,17 +33,21 @@ class Directory extends Entry {
 
     getDirectory(name, options = {}) {
         return new Promise((resolve, reject) => {
-            this.entry.getDirectory(name, options, resolve, reject);
+            this.entry.getDirectory(name, options, (entry) => {
+                resolve(new Directory(entry));
+            }, reject);
         });
     }
 
     getFile(name, options = {}) {
         return new Promise((resolve, reject) => {
-            this.entry.getFile(name, options, resolve, reject);
+            this.entry.getFile(name, options, (entry) => {
+                resolve(new File(entry));
+            }, reject);
         });
     }
 
-    getFlatFiles() {
+    getFlatFiles(filterFn) {
         const add = function(files, flat) {
             files.forEach((file) => {
                 if (file.isFile) {
@@ -56,14 +58,14 @@ class Directory extends Entry {
             });
         };
 
-        return this.readRecursive().then(() => {
+        return this.readRecursive(filterFn).then(() => {
             const flat = [];
             add(this.files, flat);
             return flat;
         });
     }
 
-    getSimpleFiles() {
+    getSimpleFiles(filterFn) {
         const convert = function(files) {
             const simple = files.map((file) => {
                 if (file.isFile) {
@@ -89,7 +91,7 @@ class Directory extends Entry {
             return simple;
         };
 
-        return this.readRecursive().then(() => {
+        return this.readRecursive(filterFn).then(() => {
             return {
                 name: this.entry.name,
                 files: convert(this.files)
@@ -97,8 +99,8 @@ class Directory extends Entry {
         });
     }
 
-    read() {
-        const reader = this.createReader();
+    read(filterFn) {
+        const reader = this.entry.createReader();
 
         return new Promise((resolve, reject) => {
             reader.readEntries((results) => {
@@ -112,13 +114,18 @@ class Directory extends Entry {
                         return new File(entry);
                     }
                 });
+
+                if (typeof filterFn !== 'undefined') {
+                    this.files = this.files.filter(file => filterFn(file));
+                }
+
                 return resolve(this.files);
             });
         });
     }
 
-    readRecursive() {
-        return this.readDir().then((files) => {
+    readRecursive(filterFn) {
+        return this.read(filterFn).then((files) => {
             const promises = [];
 
             files.forEach((file) => {
@@ -157,3 +164,5 @@ class Directory extends Entry {
         });
     }
 }
+
+module.exports = Directory;

@@ -8,23 +8,33 @@ module.exports = {
     File,
 
     chooseEntry(options) {
-        return this.promise(function(resolve, reject) {
+        return new Promise((resolve, reject) => {
             chrome.fileSystem.chooseEntry(options, (entry) => {
                 if (chrome.runtime.lastError) {
                     return reject(chrome.runtime.lastError);
                 }
-                return resolve(entry);
+
+                if (entry.isDirectory) {
+                    return resolve(new Directory(entry));
+                } else {
+                    return resolve(new File(entry));
+                }
             });
         });
     },
-    
+
     restoreEntry(id) {
-        return new Promise(function(resolve, reject) {
+        return new Promise((resolve, reject) => {
             chrome.fileSystem.restoreEntry(id, (entry) => {
                 if (chrome.runtime.lastError) {
                     return reject(chrome.runtime.lastError);
                 }
-                return resolve(entry);
+
+                if (entry.isDirectory) {
+                    return resolve(new Directory(entry));
+                } else {
+                    return resolve(new File(entry));
+                }
             });
         });
     }

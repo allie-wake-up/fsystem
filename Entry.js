@@ -1,7 +1,5 @@
 'use strict';
 
-module.exports = Entry;
-
 class Entry {
     constructor(entry) {
         this.entry = entry;
@@ -11,7 +9,7 @@ class Entry {
     }
 
     getDisplayPath() {
-        return new Promise(function(resolve, reject) {
+        return new Promise((resolve, reject) => {
             chrome.fileSystem.getDisplayPath(this.entry, (displayPath) => {
                 if (chrome.runtime.lastError) {
                     return reject(chrome.runtime.lastError);
@@ -31,3 +29,5 @@ class Entry {
         });
     }
 }
+
+module.exports = Entry;

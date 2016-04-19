@@ -1,6 +1,6 @@
 {
   "name": "chrome-fs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "chrome.filesystem with promises and helper fns",
   "main": "index.js",
   "scripts": {
@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/TheKiteEatingTree/chrome-fs/issues"
   },
-  "homepage": "https://github.com/TheKiteEatingTree/chrome-fs#readme"
+  "homepage": "https://github.com/TheKiteEatingTree/chrome-fs#readme",
+  "dependencies": {
+    "buffer": "^4.5.1"
+  }
 }

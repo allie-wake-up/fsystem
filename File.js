@@ -1,8 +1,7 @@
 'use strict';
 
+const Buffer = require('buffer/').Buffer;
 const Entry = require('./Entry.js');
-
-module.exports = File;
 
 class File extends Entry {
     readAsText() {
@@ -74,3 +73,5 @@ class File extends Entry {
         });
     }
 }
+
+module.exports = File;
