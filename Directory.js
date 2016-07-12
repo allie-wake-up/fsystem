@@ -142,16 +142,16 @@ class Directory extends Entry {
         if (!dirs.length) {
             return Promise.resolve();
         } else if (dirs.length === 1) {
-            return this.getDirectory(name, {
+            return this.getDirectory(dirs[0], {
                 create: true,
-                exclusive: true
+                exclusive: false
             });
         } else {
-            return this.getDirectory(name, {
+            return this.getDirectory(dirs[0], {
                 create: true,
-                exclusive: true
+                exclusive: false
             }).then(() => {
-                return this._createIntermediateDirs(dirs.splice(0, 1));
+                return this._createIntermediateDirs(dirs.slice(1));
             });
         }
     }
@@ -160,7 +160,7 @@ class Directory extends Entry {
         const parts = name.split('/');
         parts.splice(parts.length - 1, 1);
         return parts.map((part, index, parts) => {
-            return parts.slice(0, index).join('/');
+            return parts.slice(0, index + 1).join('/');
         });
     }
 }
