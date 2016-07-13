@@ -1,5 +1,5 @@
 {
-  "name": "chrome-fs",
+  "name": "fsystem",
   "version": "0.1.1",
   "description": "chrome.filesystem with promises and helper fns",
   "main": "index.js",
