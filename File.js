@@ -4,6 +4,12 @@ const Buffer = require('buffer/').Buffer;
 const Entry = require('./Entry.js');
 
 class File extends Entry {
+    del() {
+        return new Promise((resolve, reject) => {
+            this.entry.remove(resolve, reject);
+        });
+    }
+
     readAsText() {
         return new Promise((resolve, reject) => {
             this.entry.file((file) => {

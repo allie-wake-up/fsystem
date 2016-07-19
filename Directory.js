@@ -31,14 +31,6 @@ class Directory extends Entry {
             }));
     }
 
-    deleteFile(name) {
-        return this.getFile(name).then((entry) => {
-            return new Promise((resolve, reject) => {
-                entry.remove(resolve, reject);
-            });
-        });
-    }
-
     getDirectory(name, options = {}) {
         return new Promise((resolve, reject) => {
             this.entry.getDirectory(name, options, (entry) => {
