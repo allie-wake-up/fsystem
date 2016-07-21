@@ -1,6 +1,6 @@
 {
   "name": "fsystem",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "chrome.filesystem with promises and helper fns",
   "main": "index.js",
   "scripts": {
