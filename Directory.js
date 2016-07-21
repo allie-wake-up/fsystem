@@ -9,6 +9,12 @@ class Directory extends Entry {
         this.files = null;
     }
 
+    del() {
+        return new Promise((resolve, reject) => {
+            this.entry.remove(resolve, reject);
+        });
+    }
+
     createDirectory(name, exclusive = true) {
         if (name[name.length - 1] === '/') {
             name = name.slice(0, -1);
@@ -31,7 +37,7 @@ class Directory extends Entry {
             }));
     }
 
-    getDirectory(name, options = {}) {
+    getDirectory(name, options = {create: false}) {
         return new Promise((resolve, reject) => {
             this.entry.getDirectory(name, options, (entry) => {
                 resolve(new Directory(entry));
