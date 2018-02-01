@@ -126,6 +126,9 @@ class Directory extends Entry {
                 }
 
                 return resolve(this.files);
+            }, (err) => {
+                console.error(err);
+                throw err;
             });
         });
     }
